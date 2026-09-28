@@ -9,7 +9,7 @@ interface ContainerInterface
     /**
      * @template T of object
      * @param class-string<T> $className
-     * @param callable(): T $callback
+     * @param callable(ContainerInterface): T $callback
      * @return $this
      */
     public function register(string $className, callable $callback): self;
@@ -17,7 +17,7 @@ interface ContainerInterface
     /**
      * @template T of object
      * @param class-string<T> $className
-     * @param callable(): T $callback
+     * @param callable(ContainerInterface): T $callback
      * @return $this
      */
     public function singleton(string $className, callable $callback): self;

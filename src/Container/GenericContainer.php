@@ -11,7 +11,7 @@ use Vampyrian\Container\Interfaces\ContainerInterface;
 
 class GenericContainer implements ContainerInterface
 {
-    /** @var array<class-string, callable(): object> */
+    /** @var array<class-string, callable(ContainerInterface): object> */
     private array $registeredClasses = [];
 
     /** @var array<class-string, object> */
@@ -20,7 +20,7 @@ class GenericContainer implements ContainerInterface
     /**
      * @template T of object
      * @param class-string<T> $className
-     * @param callable(): T $callback
+     * @param callable(ContainerInterface): T $callback
      * @return $this
      */
     public function register(string $className, callable $callback): ContainerInterface
@@ -32,13 +32,13 @@ class GenericContainer implements ContainerInterface
     /**
      * @template T of object
      * @param class-string<T> $className
-     * @param callable(): T $callback
+     * @param callable(ContainerInterface): T $callback
      * @return $this
      */
     public function singleton(string $className, callable $callback): ContainerInterface
     {
         $this->registeredClasses[$className] = function () use ($className, $callback) {
-            $instance = $callback($this);
+            $instance = $callback();
 
             $this->registeredSingletonClasses[$className] = $instance;
 
@@ -58,15 +58,17 @@ class GenericContainer implements ContainerInterface
             return $instance;
         }
 
-        $callback = $this->registeredClasses[$className] ?? $this->autowire(...);
-        return $callback($className);
+        if ($callback = $this->registeredClasses[$className] ?? null) {
+            return $callback();
+        }
+
+        return $this->autowire($className);
     }
 
     /**
      * @template T of object
      * @param class-string<T> $className
      * @return T
-     * @throws ReflectionException
      */
     private function autowire(string $className): object
     {
