@@ -3,7 +3,10 @@
     "autoload": {
         "psr-4": {
             "Vampyrian\\Container\\": "src/"
-        }
+        },
+        "files": [
+            "src/Container/functions.php"
+        ]
     },
     "authors": [
         {
