@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Vampyrian\Container\Container;
 
+use ReflectionClass;
+use ReflectionException;
+use ReflectionParameter;
 use Vampyrian\Container\Interfaces\ContainerInterface;
 
 class GenericContainer implements ContainerInterface
@@ -38,10 +41,16 @@ class GenericContainer implements ContainerInterface
      * @template T of object
      * @param class-string<T> $className
      * @return T
+     * @throws ReflectionException
      */
     private function autowire(string $className): object
     {
+        $reflection = new ReflectionClass($className);
+        $parameters = array_map(
+            fn(ReflectionParameter $parameter) => $this->get($parameter->getType()->getName()),
+            $reflection->getConstructor()?->getParameters() ?? []
+        );
 
-        return new $className();
+        return new $className(...$parameters);
     }
 }
