@@ -9,7 +9,7 @@ class SimpleGenericContainerTest extends TestCase
 {
     public function testContainerRegistration(): void
     {
-        $container = new GenericContainer();
+        $container = GenericContainer::getInstance();
         $container->register(ClassC::class, fn () => new ClassC());
 
         $class = $container->get(ClassC::class);
@@ -18,7 +18,7 @@ class SimpleGenericContainerTest extends TestCase
 
     public function testAutowire(): void
     {
-        $container = new GenericContainer();
+        $container = GenericContainer::getInstance();
 
         $class = $container->get(ClassC::class);
         $this->assertInstanceOf(ClassC::class, $class);

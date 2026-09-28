@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Vampyrian\Container\Container;
 
 use ReflectionClass;
-use ReflectionException;
 use ReflectionParameter;
+use Vampyrian\Container\Helpers\Singleton;
 use Vampyrian\Container\Interfaces\ContainerInterface;
 
-class GenericContainer implements ContainerInterface
+class GenericContainer extends Singleton implements ContainerInterface
 {
     /** @var array<class-string, callable(ContainerInterface): object> */
     private array $registeredClasses = [];

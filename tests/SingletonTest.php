@@ -9,7 +9,7 @@ class SingletonTest extends TestCase
 {
     public function testSingleton()
     {
-        $container = new GenericContainer();
+        $container = GenericContainer::getInstance();
         $container->singleton(Singleton::class, fn() => new Singleton());
 
         $container->get(Singleton::class);

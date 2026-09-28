@@ -9,7 +9,7 @@ class RecursiveGenericContainerTest extends TestCase
 {
     public function testRecursive(): void
     {
-        $container = new GenericContainer();
+        $container = GenericContainer::getInstance();
         $d = $container->get(ClassD::class);
         $this->assertInstanceOf(ClassD::class, $d);
     }

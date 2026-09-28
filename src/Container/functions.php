@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Vampyrian\Container\Container;
 
-function container(): GenericContainer
+use Vampyrian\Container\Interfaces\ContainerInterface;
+
+function container(): ContainerInterface
 {
-    return new GenericContainer();
+    return GenericContainer::getInstance();
 }
