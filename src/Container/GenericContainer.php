@@ -8,12 +8,14 @@ use Vampyrian\Container\Interfaces\ContainerInterface;
 
 class GenericContainer implements ContainerInterface
 {
+    /** @var array<class-string, callable(): object> */
     private array $registeredClasses = [];
 
     /**
-     * @param string $className
-     * @param callable $callback
-     * @return ContainerInterface
+     * @template T of object
+     * @param class-string<T> $className
+     * @param callable(): T $callback
+     * @return $this
      */
     public function register(string $className, callable $callback): ContainerInterface
     {
@@ -22,13 +24,24 @@ class GenericContainer implements ContainerInterface
     }
 
     /**
-     * @template TClassName
-     * @param class-string<TClassName> $className
-     * @return TClassName
+     * @template T of object
+     * @param class-string<T> $className
+     * @return T
      */
     public function get(string $className): object
     {
-        $callback = $this->registeredClasses[$className];
-        return $callback();
+        $callback = $this->registeredClasses[$className] ?? $this->autowire(...);
+        return $callback($className);
+    }
+
+    /**
+     * @template T of object
+     * @param class-string<T> $className
+     * @return T
+     */
+    private function autowire(string $className): object
+    {
+        return new $className();
+
     }
 }
