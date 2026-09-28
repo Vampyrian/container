@@ -41,7 +41,7 @@ class GenericContainer implements ContainerInterface
      */
     private function autowire(string $className): object
     {
-        return new $className();
 
+        return new $className();
     }
 }
