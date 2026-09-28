@@ -29,6 +29,6 @@ class GenericContainer implements ContainerInterface
     public function get(string $className): object
     {
         $callback = $this->registeredClasses[$className];
-        return new $callback();
+        return $callback();
     }
 }

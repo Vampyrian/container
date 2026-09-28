@@ -7,7 +7,7 @@ use Vampyrian\Container\Container\GenericContainer;
 
 class GenericContainerTest extends TestCase
 {
-    public function testContainer(): void
+    public function testSimpleContainer(): void
     {
         $container = new GenericContainer();
         $container->register(ClassA::class, fn () => new ClassA());
