@@ -1,0 +1,17 @@
+{
+    "name": "vampyrian/container",
+    "autoload": {
+        "psr-4": {
+            "Vampyrian\\Container\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Žilvinas Mačius",
+            "email": "zivinas@diginet.lt"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^13"
+    }
+}
