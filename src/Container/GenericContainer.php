@@ -14,6 +14,9 @@ class GenericContainer implements ContainerInterface
     /** @var array<class-string, callable(): object> */
     private array $registeredClasses = [];
 
+    /** @var array<class-string, object> */
+    private array $registeredSingletonClasses = [];
+
     /**
      * @template T of object
      * @param class-string<T> $className
@@ -29,10 +32,32 @@ class GenericContainer implements ContainerInterface
     /**
      * @template T of object
      * @param class-string<T> $className
+     * @param callable(): T $callback
+     * @return $this
+     */
+    public function singleton(string $className, callable $callback): ContainerInterface
+    {
+        $this->registeredClasses[$className] = function () use ($className, $callback) {
+            $instance = $callback($this);
+
+            $this->registeredSingletonClasses[$className] = $instance;
+
+            return $instance;
+        };
+        return $this;
+    }
+
+    /**
+     * @template T of object
+     * @param class-string<T> $className
      * @return T
      */
     public function get(string $className): object
     {
+        if ($instance = $this->registeredSingletonClasses[$className] ?? null) {
+            return $instance;
+        }
+
         $callback = $this->registeredClasses[$className] ?? $this->autowire(...);
         return $callback($className);
     }
