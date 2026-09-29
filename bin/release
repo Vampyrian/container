@@ -8,11 +8,32 @@
 #   bin/release delete <X.Y.Z[-pre]> [--dry-run]
 #
 # Examples:
-#   bin/release create patch                # 0.1.0-alpha -> 0.1.0
-#   bin/release create minor --pre beta     # 0.1.0 -> 0.2.0-beta
-#   bin/release create 1.0.0
-#   bin/release create 0.1.0-alpha         # tag current version without bumping
-#   bin/release delete 0.2.0-beta
+#   Promote / bump (current version is read from composer.json):
+#     bin/release create patch                # 0.1.0-alpha -> 0.1.0  (promote pre-release)
+#     bin/release create patch                # 0.1.0 -> 0.1.1
+#     bin/release create minor                # 0.1.1 -> 0.2.0
+#     bin/release create major                # 0.2.0 -> 1.0.0
+#
+#   Pre-releases (published on GitHub as "pre-release"):
+#     bin/release create minor --pre beta     # 0.1.0 -> 0.2.0-beta
+#     bin/release create major --pre rc       # 0.2.0 -> 1.0.0-rc
+#     bin/release create patch --pre alpha    # 0.1.0 -> 0.1.1-alpha
+#     bin/release create 1.0.0-rc.2           # explicit pre-release label
+#
+#   Explicit versions:
+#     bin/release create 1.0.0                # set version exactly
+#     bin/release create 0.1.0-alpha          # tag current version without bumping
+#
+#   Safe runs:
+#     bin/release create minor --dry-run      # print every step, change nothing
+#     bin/release create 1.0.0 --draft        # create an unpublished draft release
+#     bin/release create major --pre rc --draft --dry-run
+#
+#   Inspect / clean up:
+#     bin/release list                        # show GitHub releases
+#     bin/release delete 0.2.0-beta           # delete release + tag (asks to confirm)
+#     bin/release delete v0.2.0-beta          # leading "v" is accepted
+#     bin/release delete 0.2.0-beta --dry-run
 #
 # Requires: git, php, composer deps installed, GitHub CLI (`gh`) authenticated.
 
@@ -36,7 +57,7 @@ run()  {
 }
 
 usage() {
-    sed -n '3,16p' "$0" | sed 's/^# \{0,1\}//'
+    sed -n '3,/^# Requires/p' "$0" | sed 's/^# \{0,1\}//'
     exit "${1:-0}"
 }
 
