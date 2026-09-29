@@ -100,3 +100,7 @@ container()
 ```bash
 composer test
 ```
+
+## License
+
+Released under the [MIT License](LICENSE).

@@ -1,5 +1,6 @@
 {
     "name": "vampyrian/container",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Vampyrian\\Container\\": "src/"
