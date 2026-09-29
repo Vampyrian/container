@@ -38,7 +38,7 @@ class GenericContainer extends Singleton implements ContainerInterface
     public function singleton(string $className, callable $callback): ContainerInterface
     {
         $this->registeredClasses[$className] = function () use ($className, $callback) {
-            $instance = $callback();
+            $instance = $callback($this);
 
             $this->registeredSingletonClasses[$className] = $instance;
 
@@ -59,7 +59,7 @@ class GenericContainer extends Singleton implements ContainerInterface
         }
 
         if ($callback = $this->registeredClasses[$className] ?? null) {
-            return $callback();
+            return $callback($this);
         }
 
         return $this->autowire($className);
