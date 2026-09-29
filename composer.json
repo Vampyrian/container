@@ -1,5 +1,6 @@
 {
     "name": "vampyrian/container",
+    "version": "0.1.0-alpha",
     "license": "MIT",
     "autoload": {
         "psr-4": {
